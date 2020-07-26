@@ -3,7 +3,7 @@ Mirostat is a neural text decoding algorithm that generates texts of predetermin
 
 Installation requirement:
 - pip install transformers==v2.8.0
-- pip3 install torch torchvision
+- pip install torch torchvision
 
 Example Use:
 
