@@ -9,7 +9,7 @@ def estimate_s(prob):
   result = 0
   num = 0
   den = 0
-  for i in range(3000):
+  for i in range(100):
     b = prob[i]/prob[i+1]
     t = (i+2)/(i+1)
     num += math.log(b)*math.log(t)
