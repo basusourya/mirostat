@@ -15,7 +15,7 @@ If you find the code useful in your work, cite it as:
 ```
 @inproceedings{
 BasuRKV2021,
-title={{\{}MIROSTAT{\}}: A {\{}NEURAL{\}} {\{}TEXT{\}} {\{}DECODING{\}} {\{}ALGORITHM{\}} {\{}THAT{\}} {\{}DIRECTLY{\}} {\{}CONTROLS{\}} {\{}PERPLEXITY{\}}},
+title={MIROSTAT: A NEURAL TEXT DECODING ALGORITHM THAT DIRECTLY CONTROLS PERPLEXITY},
 author={Sourya Basu and Govardana Sachitanandam Ramachandran and Nitish Shirish Keskar and Lav R. Varshney},
 booktitle={International Conference on Learning Representations},
 year={2021},
