@@ -11,7 +11,7 @@ Example Use:
 
 where num_tokens reperesent the number of tokens to be generated, tau reperesent the average surprise value (i.e. log of perplexity), and context.txt is a text file containing the context.
 
-If you find the code useful in your work, cite it as:
+If you find the code useful in your work, please cite it as:
 ```
 @inproceedings{
 BasuRKV2021,
