@@ -1,4 +1,4 @@
-Code for mirostat sampling algorithm proposed in our paper "Mirostat: A Perplexity-Controlled Neural Text Decoding Algorithm" in ICLR 2021. The paper is available here: https://arxiv.org/abs/2007.14966.
+Code for mirostat sampling algorithm proposed in our paper "Mirostat: A Perplexity-Controlled Neural Text Decoding Algorithm" in ICLR 2021. The paper is available [here](https://openreview.net/pdf?id=W1G1JZEIy5_).
 
 **Tl;dr**: We provide a new text decoding algorithm that directly controls generated text statistics and hence generates more human-like texts using large language models like GPT-2, CTRL, etc.
 
