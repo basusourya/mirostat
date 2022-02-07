@@ -5,6 +5,7 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
 import math
 
+
 def estimate_s(prob):
   result = 0
   num = 0
@@ -16,12 +17,12 @@ def estimate_s(prob):
     den += math.log(t)**2
   return num/den
 
+
 def compute_k(n,s,tau):
     eps = s-1
     k = ((eps*(2**(tau)))/(1-n**(-eps)))**(1/s)
     k = round(k)
     return k
-
 
 
 parser = argparse.ArgumentParser(description='Mirostat sampling')
@@ -31,8 +32,6 @@ parser.add_argument('--context', type=str, help='Provide the address to the file
 
 args = parser.parse_args()
 print("Mirostat sampling!")
-
-
 
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 model = GPT2LMHeadModel.from_pretrained('gpt2')
@@ -58,41 +57,41 @@ indices_surprise = []
 ######################################################
 model.eval()
 
-
-#If you have a GPU, put everything on cuda
-#context = context.to('cuda')
-#model.to('cuda')
+# If you have a GPU, put everything on cuda
+# context = context.to('cuda')
+# model.to('cuda')
 
 with torch.no_grad():
 
-  for i in range(num_tokens):
-    output, past = model(context,past)
-    logits = output[0,-1,:]
+    for i in range(num_tokens):
+        forward = model(input_ids=context, past_key_values=past, return_dict=True)
+        logits = forward.logits[0, -1, :]
+        past = forward.past_key_values
 
-    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
-    prob_original = torch.softmax(sorted_logits, dim=-1).tolist()
-    
-    #Estimate s
-    s = estimate_s(prob_original)
-    #Compute k
-    k = compute_k(n,s,max_surprise)+1
+        sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+        prob_original = torch.softmax(sorted_logits, dim=-1).tolist()
 
-    sorted_logits = sorted_logits[0:k]
-    sorted_indices = sorted_indices[0:k]
+        # Estimate s
+        s = estimate_s(prob_original)
+        # Compute k
+        k = compute_k(n,s,max_surprise)+1
 
-    prob_topk = torch.softmax(sorted_logits, dim = 0)
-    prev_i = torch.multinomial(prob_topk, num_samples=1, replacement=True)
-    index_surprise = math.log2(1/prob_original[prev_i])
-    indices_surprise.append(index_surprise)
+        sorted_logits = sorted_logits[0:k]
+        sorted_indices = sorted_indices[0:k]
 
-    running_tot_surprise += index_surprise
-    prev = sorted_indices[prev_i]
-    generated += prev.tolist()
-    context = torch.tensor([prev.tolist()])#.to('cuda')
+        prob_topk = torch.softmax(sorted_logits, dim = 0)
+        prev_i = torch.multinomial(prob_topk, num_samples=1, replacement=True)
+        index_surprise = math.log2(1/prob_original[prev_i])
+        indices_surprise.append(index_surprise)
 
-    #adjust max_surprise
-    error_surprise = index_surprise - target_surprise
-    max_surprise -= learning_rate*error_surprise
+        running_tot_surprise += index_surprise
+        prev = sorted_indices[prev_i]
+        generated += prev.tolist()
+        context = torch.tensor([prev.tolist()])  # add ".to('cuda')" if you have a GPU
+
+        # adjust max_surprise
+        error_surprise = index_surprise - target_surprise
+        max_surprise -= learning_rate*error_surprise
 
 print("Total surprise value:", sum(indices_surprise))
 print("Average surprise value:", sum(indices_surprise)/num_tokens)

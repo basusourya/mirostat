@@ -3,7 +3,9 @@ Code for mirostat sampling algorithm proposed in our paper "Mirostat: A Perplexi
 **Tl;dr**: We provide a new text decoding algorithm that directly controls generated text statistics and hence generates more human-like texts using large language models like GPT-2, CTRL, etc.
 
 Installation requirement:
-- pip install transformers==v2.8.0
+(Tested with version 4.16.2)
+
+`pip install transformers`
 
 Example Use:
 
